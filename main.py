@@ -45,7 +45,17 @@ def root():
                 "GET /composite/movies/{id}",
                 "PUT /composite/movies/{id}",
                 "DELETE /composite/movies/{id}",
-                "GET /composite/movies/{id}/people"
+                "GET /composite/movies/{id}/people",
+                "POST /composite/movies/{id}/generate-share-card",
+                "GET /composite/movies/{id}/share-card-jobs/{job_id}"
+            ],
+            "people": [
+                "GET /composite/people",
+                "POST /composite/people",
+                "GET /composite/people/{id}",
+                "PUT /composite/people/{id}",
+                "DELETE /composite/people/{id}",
+                "GET /composite/people/{id}/movies"
             ],
             "reviews": [
                 "GET /composite/reviews",
