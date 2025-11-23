@@ -93,3 +93,12 @@ async def delete_person(person_id: int):
 
 async def get_person_movies(person_id: int):
     return await _request("GET", f"/people/{person_id}/movies")
+
+
+# Share card async job endpoints ---------------------------------------------
+async def generate_share_card(movie_id: int):
+    return await _request("POST", f"/movies/{movie_id}/generate-share-card")
+
+
+async def get_share_card_job_status(movie_id: int, job_id: str):
+    return await _request("GET", f"/movies/{movie_id}/share-card-jobs/{job_id}")

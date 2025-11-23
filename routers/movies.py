@@ -1,3 +1,5 @@
+from urllib.parse import urljoin
+
 from fastapi import APIRouter, Request, Response
 from services import ms2
 
@@ -5,6 +7,15 @@ router = APIRouter()
 
 def _json_or_none(resp):
     return resp.json() if resp.content else None
+
+
+def _rewrite_card_url(data):
+    """Convert relative card_url from MS2 to absolute using MS2_BASE_URL."""
+    if isinstance(data, dict):
+        card_url = data.get("card_url")
+        if card_url and card_url.startswith("/"):
+            data = {**data, "card_url": urljoin(ms2.MS2_BASE_URL.rstrip("/") + "/", card_url.lstrip("/"))}
+    return data
 
 
 @router.get("/movies")
@@ -58,6 +69,22 @@ async def composite_delete_movie(movie_id: int, response: Response):
 async def composite_movie_people(movie_id: int):
     upstream = await ms2.get_movie_people(movie_id)
     return _json_or_none(upstream)
+
+
+# Share card job endpoints ----------------------------------------------------
+@router.post("/movies/{movie_id}/generate-share-card", status_code=202)
+async def composite_generate_share_card(movie_id: int, response: Response):
+    upstream = await ms2.generate_share_card(movie_id)
+    response.status_code = upstream.status_code
+    data = _json_or_none(upstream)
+    return _rewrite_card_url(data)
+
+
+@router.get("/movies/{movie_id}/share-card-jobs/{job_id}")
+async def composite_get_share_card_job_status(movie_id: int, job_id: str):
+    upstream = await ms2.get_share_card_job_status(movie_id, job_id)
+    data = _json_or_none(upstream)
+    return _rewrite_card_url(data)
 
 
 # People endpoints ------------------------------------------------------------
