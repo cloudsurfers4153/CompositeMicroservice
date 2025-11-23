@@ -7,7 +7,8 @@ import httpx
 from fastapi import HTTPException
 
 # Base URL for MicroService3 (override via env, e.g., http://localhost:8000)
-MS3_BASE_URL = os.getenv("MS3_BASE_URL", "http://localhost:8000")
+# Default to deployed MS3 instance
+MS3_BASE_URL = os.getenv("MS3_BASE_URL", "http://34.61.43.139:8000")
 TIMEOUT = float(os.getenv("MS3_TIMEOUT", "5.0"))
 
 
