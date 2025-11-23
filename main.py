@@ -1,10 +1,20 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from routers import users, movies, reviews, composite
 
 app = FastAPI(
     title="Composite Microservice",
     description="Delegates operations to MS1, MS2, and MS3.",
     version="1.0.0"
+)
+
+# Enable CORS for frontend
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # In production, specify exact origins
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 app.include_router(users.router, prefix="/composite")

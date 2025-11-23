@@ -7,7 +7,8 @@ import httpx
 from fastapi import HTTPException
 
 # Base URL for MicroService2 (override via env, e.g., http://localhost:8000)
-MS2_BASE_URL = os.getenv("MS2_BASE_URL", "http://localhost:8000")
+# Default to Cloud Run deployment URL
+MS2_BASE_URL = os.getenv("MS2_BASE_URL", "https://microservice2-608197196549.us-central1.run.app")
 TIMEOUT = float(os.getenv("MS2_TIMEOUT", "5.0"))
 
 
