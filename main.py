@@ -16,10 +16,37 @@ app.include_router(composite.router, prefix="/composite")
 def root():
     return {
         "message": "Composite Microservice is running",
-        "routes": [
-            "/composite/users/{id}",
-            "/composite/movies/{id}",
-            "/composite/reviews",
-            "/composite/movie-details/{id}"
-        ]
+        "services": {
+            "MS1": "Users Service",
+            "MS2": "Movies & People Service",
+            "MS3": "Reviews Service"
+        },
+        "routes": {
+            "users": [
+                "POST /composite/sessions (login)",
+                "POST /composite/users (register)",
+                "GET /composite/users/{id}",
+                "PATCH /composite/users/{id}",
+                "DELETE /composite/users/{id}"
+            ],
+            "movies": [
+                "GET /composite/movies",
+                "POST /composite/movies",
+                "GET /composite/movies/{id}",
+                "PUT /composite/movies/{id}",
+                "DELETE /composite/movies/{id}",
+                "GET /composite/movies/{id}/people"
+            ],
+            "reviews": [
+                "GET /composite/reviews",
+                "POST /composite/reviews",
+                "GET /composite/reviews/{id}",
+                "PUT /composite/reviews/{id}",
+                "DELETE /composite/reviews/{id}",
+                "GET /composite/health"
+            ],
+            "composite": [
+                "GET /composite/movie-details/{id}"
+            ]
+        }
     }
