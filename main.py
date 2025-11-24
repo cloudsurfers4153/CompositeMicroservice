@@ -17,7 +17,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# app.include_router(users.router, prefix="/composite")
+app.include_router(users.router, prefix="/composite")
 app.include_router(movies.router, prefix="/composite")
 app.include_router(reviews.router, prefix="/composite")
 app.include_router(composite.router, prefix="/composite")

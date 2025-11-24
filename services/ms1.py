@@ -7,7 +7,7 @@ import httpx
 from fastapi import HTTPException
 
 # Base URL for MicroService1 (override via env, e.g., http://localhost:8080)
-MS1_BASE_URL = os.getenv("MS1_BASE_URL", "")
+MS1_BASE_URL = os.getenv("MS1_BASE_URL", "https://microservice1-608197196549.us-central1.run.app")
 TIMEOUT = float(os.getenv("MS1_TIMEOUT", "5.0"))
 
 
