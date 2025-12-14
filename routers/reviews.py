@@ -129,6 +129,26 @@ async def composite_delete_review(review_id: int, response: Response):
 
 @router.get("/health")
 async def composite_health_check():
-    """Health check endpoint."""
-    upstream = await ms3.health_check()
-    return _json_or_none(upstream)
+    """
+    Health check endpoint for the composite service.
+
+    Returns composite status plus downstream MS3 status, but will not raise if MS3
+    is unavailable—useful for uptime probes to reflect the composite’s own health.
+    """
+    ms3_status = {"ok": False}
+    try:
+        upstream = await ms3.health_check()
+        ms3_status.update({
+            "ok": True,
+            "status_code": upstream.status_code,
+            "body": _json_or_none(upstream)
+        })
+    except Exception as exc:  # pragma: no cover - defensive path
+        ms3_status.update({"error": str(exc)})
+
+    overall_ok = ms3_status.get("ok", False)
+    return {
+        "composite": {"ok": True},
+        "ms3": ms3_status,
+        "status": "ok" if overall_ok else "degraded"
+    }
