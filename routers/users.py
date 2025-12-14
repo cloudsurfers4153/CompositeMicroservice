@@ -25,6 +25,31 @@ async def composite_login(body: dict, response: Response):
     return _json_or_none(upstream)
 
 
+@router.get("/auth/google/url")
+async def composite_google_auth_url(response: Response):
+    """Retrieve Google OAuth authorization URL and state."""
+    upstream = await ms1.google_auth_url()
+    response.status_code = upstream.status_code
+    return _json_or_none(upstream)
+
+
+@router.get("/auth/google/callback")
+async def composite_google_callback(request: Request, response: Response):
+    """Forward Google OAuth callback query params to MS1."""
+    upstream = await ms1.google_callback(dict(request.query_params))
+    response.status_code = upstream.status_code
+    return _json_or_none(upstream)
+
+
+@router.post("/auth/google/logout")
+async def composite_google_logout(request: Request, response: Response, body: dict = None):
+    """Revoke Google token for the current user."""
+    headers = _extract_auth_headers(request)
+    upstream = await ms1.google_logout(body, headers=headers)
+    response.status_code = upstream.status_code
+    return _json_or_none(upstream)
+
+
 @router.post("/users")
 async def composite_create_user(body: dict, request: Request, response: Response):
     """Register a new user"""

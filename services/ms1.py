@@ -55,6 +55,21 @@ async def login(body: Dict[str, Any]):
     return await _request("POST", "/sessions", json=body)
 
 
+async def google_auth_url():
+    """Get Google OAuth authorization URL and state."""
+    return await _request("GET", "/auth/google/url")
+
+
+async def google_callback(params: Dict[str, Any]):
+    """Handle Google OAuth callback by forwarding query params."""
+    return await _request("GET", "/auth/google/callback", params=params)
+
+
+async def google_logout(body: Optional[Dict[str, Any]] = None, headers: Optional[Dict[str, str]] = None):
+    """Revoke Google token for the current user (requires Authorization header)."""
+    return await _request("POST", "/auth/google/logout", json=body, headers=headers)
+
+
 async def get_user(user_id: str, headers: Optional[Dict[str, str]] = None):
     return await _request("GET", f"/users/{user_id}", headers=headers)
 

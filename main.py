@@ -34,6 +34,9 @@ def root():
         "routes": {
             "users": [
                 "POST /composite/sessions (login)",
+                "GET /composite/auth/google/url",
+                "GET /composite/auth/google/callback",
+                "POST /composite/auth/google/logout",
                 "POST /composite/users (register)",
                 "GET /composite/users/{id}",
                 "PATCH /composite/users/{id}",
